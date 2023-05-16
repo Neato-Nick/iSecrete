@@ -38,19 +38,22 @@ read_sp5 <- function(file) {
 #' Read in a file from TMHMM-2.0c.
 #' This function simply reads in the file and adds logical column names
 #' @param file gff output file from SignalP-5
+#' @param ... additional arguments passed to read_tsv
 #' @keywords tmhmm
 #' @return A tibble
 #' @seealso \code{/link{pivot_tmhmm}} for conversion to "long" format.
 #'
 #' @export
-read_tmhmm <- function(file, cols=c("Protein", "Length", "Exp_AA", "First_60", "Pred_hel", "Topology")) {
-  tmhmm_df <- readr::read_tsv(file, col_names = cols)
+read_tmhmm <- function(file, cols=c("Protein", "Length", "Exp_AA", "First_60", "Pred_hel", "Topology"), ...) {
+  tmhmm_df <- readr::read_tsv(file, col_names = cols, ...)
 
   # clean data of text repeated in every row
   tmhmm_clean <- tmhmm_df %>%
     tidyr::separate(Length, c(NA, "Length"), convert = TRUE) %>%
-    tidyr::separate(Exp_AA, c(NA, "Exp_AA"), convert = TRUE) %>%
-    tidyr::separate(First_60, c(NA, "First_60"), convert = TRUE) %>%
+    # merge extra - includes fractions of Exp_AA
+    tidyr::separate(Exp_AA, c(NA, "Exp_AA"), convert = TRUE, extra = "merge") %>%
+    # merge extra - includes fractions of First_60
+    tidyr::separate(First_60, c(NA, "First_60"), convert = TRUE, extra = "merge") %>%
     tidyr::separate(Pred_hel, c(NA, "Pred_hel"), convert = TRUE) %>%
     # if you don't merge the extra pieces of topology, dplyr only keeps the first feat
     tidyr::separate(Topology, c(NA, "Topology"), convert = TRUE, extra = "merge")

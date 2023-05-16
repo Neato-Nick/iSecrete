@@ -1,9 +1,9 @@
 Package: iSecrete
 Type: Package
 Title: Tidy Output of Secretome-Inference Tools
-Version: 0.1.0
-Author: Nicholas Carleson
-Maintainer: Nicholas Carleson <carleson@oregonstate.edu>
+Version: 0.2.0
+Author: Nicholas Cauldron (Carleson)
+Maintainer: Nicholas Cauldron <nc.cauldron@gmail.com>
 Description: Methods to read output from TMHMM, SignalP, and other secretome tools into R.
     Some files are simply read in, others require processing into "long" format
     for ease of use with tools in the tidyverse.
